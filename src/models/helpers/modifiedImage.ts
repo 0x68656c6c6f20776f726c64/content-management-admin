@@ -1,5 +1,5 @@
 export class ModifiedImage{
     id:string;
-    content:string;
+    content:File;
     status:string;
 }

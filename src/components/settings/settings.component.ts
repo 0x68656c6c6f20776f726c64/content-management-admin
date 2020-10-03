@@ -6,7 +6,7 @@ import { ImageService } from 'src/services/image.service';
 import { SettingsService } from 'src/services/settings.service';
 import { settings } from 'src/models/schemas/settings';
 import { ActivatedRoute } from '@angular/router';
-import { httpReturn } from 'src/models/httpReturn';
+import { fileReturn, httpReturn } from 'src/models/httpReturn';
 import { ToastService } from '../toast/toast.component';
 import { ImageUploadComponent } from '../shared/image-upload/image-upload.component';
 import { ImageUploadMessage } from 'src/models/helpers/ImageUploadMessage';
@@ -208,6 +208,7 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSlides(){
+    console.log(this.modifiedImage);
     this.slides.forEach(
       s=>{
         if(this.modifiedImage.find(mi=>mi.id==s.id))
@@ -216,10 +217,30 @@ export class SettingsComponent implements OnInit {
         }
       }
     )
+    this.modifiedImage.forEach(
+      mi=>{
+        this.image.uploadImage(mi).subscribe((response:fileReturn)=>{
+          if(mi.status=='delete' && response.result.message=='success')
+          {
+            this.toastService.show('successful delete slide: '+mi.id,{classname:'bg-success text-light',delay:2000});
+            this.modifiedImage.splice(this.modifiedImage.findIndex(e=>e.id==mi.id),1);
+          }
+          else if(response.result.message=='success')
+          {
+            this.slides.find(s=>s.id==mi.id).status='success';
+            this.modifiedImage.splice(this.modifiedImage.findIndex(e=>e.id==mi.id),1);
+          }
+          else
+          {
+            this.toastService.show('failed to modify slide: '+mi.id+'\n Error: '+response.result.message,{classname:'bg-danger text-light',delay:2000});
+          }
+        })
+      }
+    )
     
   }
 
-  updateNewSlideImageSource(id:string,newImage:string){
+  updateNewSlideImageSource(id:string,newImage:File){
     var modified = this.modifiedImage.find(mi=>mi.id==id);
     const existed = this.model.slides.includes(id);
     if(modified)
@@ -242,20 +263,31 @@ export class SettingsComponent implements OnInit {
   }
 
   removeThisSlide(slideIndex:number){
-    var modified = this.modifiedImage.find(mi=>mi.id==this.slides[slideIndex].id);
-    const existed = this.model.slides.includes(this.slides[slideIndex].id);
-    if(modified && existed)
+    if(this.modifiedImage.length>0)
     {
-      modified.content='';
-      modified.status='delete';
-    }
-    else if(modified)
-    {
-      this.modifiedImage.splice(this.modifiedImage.findIndex(mi=>mi.id==this.slides[slideIndex].id),1);
+      var modified = this.modifiedImage.find(mi=>mi.id==this.slides[slideIndex].id);
+      const existed = this.model.slides.includes(this.slides[slideIndex].id);
+      if(modified && existed)
+      {
+        modified.content=null;
+        modified.status='delete';
+      }
+      else if(modified)
+      {
+        this.modifiedImage.splice(this.modifiedImage.findIndex(mi=>mi.id==this.slides[slideIndex].id),1);
+      }
+      else if(existed)
+      {
+        this.modifiedImage.push({id:modified.id,content:null,status:'delete'});
+      }
+      else
+      {
+        this.modifiedImage.push({id:this.slides[slideIndex].id,content:null,status:'delete'});
+      }
     }
     else
     {
-      this.modifiedImage.push({id:modified.id,content:'',status:'delete'});
+      this.modifiedImage.push({id:this.slides[slideIndex].id,content:null,status:'delete'});
     }
     this.slides.splice(slideIndex,1);
   }

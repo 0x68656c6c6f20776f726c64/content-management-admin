@@ -12,7 +12,7 @@ import { ImageUploadMessage } from 'src/models/helpers/ImageUploadMessage';
 export class ImageUploadComponent implements OnInit {
 
   @Input() message:ImageUploadMessage;
-  @Output() newImage = new EventEmitter<string>();
+  @Output() newImage = new EventEmitter<File>();
 
   imageURL = environment.API_URL+'/pictures/';
 
@@ -40,7 +40,7 @@ export class ImageUploadComponent implements OnInit {
     reader.addEventListener('load', (event: any) => {
 
       this.selectedFile.src = event.target.result;
-      this.newImage.emit(this.selectedFile.src);
+      this.newImage.emit(file);
 
     });
     reader.readAsDataURL(file);
