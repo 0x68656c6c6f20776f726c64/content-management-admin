@@ -1,0 +1,19 @@
+<div class="sidebar-wrapper">
+    <div class="logo">
+      <a (click)="goToCustomerLink()" class="simple-text logo-mini">
+        <div class="logo-image-small">
+          <img src="http://localhost:4000/api/pictures/default">
+        </div>
+      </a>
+      <a (click)="goToCustomerLink()" class="simple-text logo-normal">
+        Polar Pioneers
+      </a>
+    </div>
+      <ul class="nav">
+          <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
+              <a [routerLink]="[menuItem.path]">
+                  <p>{{menuItem.title}}</p>
+              </a>
+          </li>
+      </ul>
+  </div>

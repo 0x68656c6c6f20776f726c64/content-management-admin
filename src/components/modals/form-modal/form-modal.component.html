@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">{{ options.title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+  
+      <div *ngFor="let question of options.questions" class="form-row">
+        <app-question [question]="question" [form]="form"></app-question>
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button [disabled]="loading || !canSubmit()" type="button" class="btn btn-outline-dark" (click)="onSubmit()">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Submit
+    </button>
+</div>

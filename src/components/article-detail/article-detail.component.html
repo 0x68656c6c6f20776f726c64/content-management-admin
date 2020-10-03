@@ -1,0 +1,64 @@
+<form (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-4 pr-1">
+          <div class="update ml-auto mr-auto">
+            <div class="mt-4">
+                <label for="title">Title</label>
+            </div>
+            <input [(ngModel)]="model.title" type="text" name="title" id="title">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 pr-1">
+          <div class="update ml-auto mr-auto">
+            <div class="mt-4">
+                <label for="subTitle">SubTitle</label>
+            </div>
+            <input [(ngModel)]="model.subtitle" type="text" name="subtitle" id="subtitle">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <label for="subTitle">Description</label>
+            </div>
+            <textarea [(ngModel)]="model.description" type="text" name="description" id="description" rows="10" cols="50"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 pr-1">
+          <div class="update ml-auto mr-auto">
+            <div class="mt-4">
+              <label>Cover Image</label>
+            </div>
+            <app-image-upload [message]=coverImage></app-image-upload>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="mt-4">
+                    <label for="text">Content</label>
+                </div>
+                <ckeditor [editor]="Editor" [data]=model.content></ckeditor>
+            </div>
+          </div>
+      </div>
+
+
+      <div class="row">
+        <div class="update ml-auto mr-auto">
+          <button type="submit" class="btn btn-primary btn-round">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save</button>
+        </div>
+      </div>
+    
+</form>

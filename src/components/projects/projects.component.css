@@ -1,0 +1,38 @@
+.nc-simple-add{
+    font-size: 54px;
+}
+li{
+    list-style-type: none;
+    display: inline-block;
+}
+.add :hover{
+    color: #ef8157;
+}
+.right-icon{
+    font-size: 25px;
+}
+.right-icon :hover{
+    color: #ef8157;
+}
+.nc-icon{
+    margin:10px;
+    cursor: pointer;
+}
+.head-image{
+    width: 100px;
+    height: 100px;
+}
+#dropdownBasic1{
+    margin-right: 60px;
+    margin-bottom: 50px;
+}
+.disabled{
+    display: none;
+}
+.upload{
+    vertical-align: middle;
+    font-size: 25px;
+}
+.upload :hover{
+    color: #ef8157;
+}

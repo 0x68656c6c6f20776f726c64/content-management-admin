@@ -1,0 +1,22 @@
+<label class="image-upload-container">
+    <input #imageInput
+            type="file"
+            accept="image/*"
+            (change)="processFile(imageInput)"
+           >
+     </label>
+
+     <div *ngIf="selectedFile" class="img-preview-container">
+      <a (click)="imageView()">
+        <div class="img-preview{{message.status === 'fail' ? '-error' : ''}}"
+            [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+        </div>
+      </a>
+    
+      <div *ngIf="message.status==='pending'" class="img-loading-overlay">
+        <div class="img-spinning-circle"></div>
+      </div>
+    
+      <div *ngIf="message.status === 'success'" class="alert alert-success"> Image Uploaded Succesfuly!</div>
+      <div *ngIf="message.status === 'fail'" class="alert alert-danger"> Image Upload Failed!</div>
+    </div>

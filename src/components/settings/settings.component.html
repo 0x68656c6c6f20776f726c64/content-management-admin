@@ -1,0 +1,365 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<ngb-accordion #regularAcc="ngbAccordion">
+  <ngb-panel id={{settingForms[0].formId}}>
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <button (click)="toggledThis(settingForms[0].formId)" class="btn btn-link container-fluid text-left pl-0">{{settingForms[0].title}}</button>
+        </div>
+        <div>
+          <li class="expand" style="margin:20px" >
+            <i *ngIf=!settingForms[0].toggled  (click)="toggledThis(settingForms[0].formId)" class="nc-icon nc-minimal-down"></i>
+            <i *ngIf=settingForms[0].toggled  (click)="toggledThis(settingForms[0].formId)" class="nc-icon nc-minimal-up"></i>
+          </li>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+      <section>
+        <div class="row ml-3 mr-3">
+              <div class="col-sm">
+                <h6 class="mt-4">Sliders</h6>
+              </div>
+              <div class="col-sm text-right">
+                <button class="btn btn-outline-warning" [disabled]=loading (click)="updateSlides()">Update Slides</button>
+                <button class="btn btn-outline-primary" [disabled]=loading (click)="addNewSlide()">New Slide</button>
+              </div>
+        </div>
+        <div class="row ml-3 mr-3">
+          <div class="col-md-4 pr-1">
+            <div class="update ml-auto mr-auto" *ngFor="let s of slides; index as i">
+              <div class="row">
+                <div class="col-sm">
+                  <label>slide {{i+1}}</label>
+                </div>
+                <div class="col-sm text-right">
+                  <li class="add" placement="bottom" (click)="removeThisSlide(i)" ngbTooltip="Remove"><i class="nc-icon nc-simple-remove"></i></li>
+                </div>
+              </div>
+              <app-image-upload [message]=s (newImage)="updateNewSlideImageSource(s.id,$event)"></app-image-upload>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-5">
+        <div class="row ml-3 mr-3">
+          <div class="col-sm">
+            <h6 class="mt-4">Descriptions Settings</h6>
+          </div>
+          <div class="col-sm text-right">
+            <button class="btn btn-outline-warning" [disabled]=loading (click)="updateDescriptions()">Update Descriptions</button>
+          </div>
+        </div>
+
+
+        <form class="px-4 py-3" #descriptionForm="ngForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text pr-3" style="background-color:snow">News Page Description</span>
+                </div>
+                <textarea class="form-control" id="news_description" [(ngModel)]='model.news_description' name="news_description" required maxlength="300" #news_description="ngModel"></textarea>
+                <div [hidden]="news_description.valid"
+                class="alert alert-danger">
+                news_description is not valid
+                </div>
+              </div>
+            </div>
+           </div>
+
+
+           <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="input-group-prepend" >
+                  <span class="input-group-text pr-3" style="background-color:snow">About Us Page Description</span>
+                </div>
+                <textarea class="form-control" id="about_us_description" [(ngModel)]='model.about_us_description' name="about_us_description" required maxlength="300" #about_us_description="ngModel"></textarea>
+                <div [hidden]="about_us_description.valid"
+                class="alert alert-danger">
+                about_us_description is not valid
+                </div>
+              </div>
+            </div>
+           </div>
+        </form>
+       
+      </section>
+
+    </ng-template>
+  </ngb-panel>
+
+
+  <ngb-panel id={{settingForms[1].formId}}>
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <button (click)="toggledThis(settingForms[1].formId)" class="btn btn-link container-fluid text-left pl-0">{{settingForms[1].title}}</button>
+        </div>
+        <div>
+          <li class="expand" style="margin:20px" >
+            <i *ngIf=!settingForms[1].toggled (click)="toggledThis(settingForms[1].formId)" class="nc-icon nc-minimal-down"></i>
+            <i *ngIf=settingForms[1].toggled (click)="toggledThis(settingForms[1].formId)" class="nc-icon nc-minimal-up"></i>
+          </li>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <form #companyInfo="ngForm">
+        <div class="row">
+          <div class="col-md-5 pr-1">
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" class="form-control" [disabled]=!rootAccount placeholder="Company" id="companyName" [(ngModel)]='model.companyInfo.companyName' name="companyName" #companyName="ngModel" requried>
+            </div>
+          </div>
+          <div class="col-md-3 px-1">
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" class="form-control" placeholder="Phone Number" id="companyPhone" [(ngModel)]='model.companyInfo.companyPhone' name="companyPhone" #companyPhone="ngModel" required>
+            </div>
+          </div>
+          <div class="col-md-4 pl-1">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" placeholder="Email" id="companyEmail" [(ngModel)]='model.companyInfo.companyEmail' name="companyEmail" #companyEmail="ngModel" required email> 
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" class="form-control" placeholder="Home Address" id="companyAddress" [(ngModel)]='model.companyInfo.companyAddress' name="companyAddress" #companyAddress="ngModel" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 pr-1">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" placeholder="City" id="companyCity" [(ngModel)]='model.companyInfo.companyCity' name="companyCity" #companyCity="ngModel" required>
+            </div>
+          </div>
+          <div class="col-md-4 px-1">
+            <div class="form-group">
+              <label>Country</label>
+              <input type="text" class="form-control" placeholder="Country" id="companyCountry" [(ngModel)]='model.companyInfo.companyCountry' name="companyCountry" #companyCountry="ngModel" required>
+            </div>
+          </div>
+          <div class="col-md-4 pl-1">
+            <div class="form-group">
+              <label>Postal Code</label>
+              <input type="text" class="form-control" placeholder="ZIP Code" id="companyPostalCode" [(ngModel)]='model.companyInfo.companyPostalCode' name="companyPostalCode" #companyPostalCode="ngModel" required>
+            </div>
+          </div>
+        </div>
+        <div class="col pl-1">
+          <div class="form-group">
+            <label>Company Description</label>
+            <textarea class="form-control" id="companyDescription" [(ngModel)]='model.companyInfo.companyDescription' name="companyDescription" required maxlength="300" #companyDescription="ngModel"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 pr-1">
+            <div class="update ml-auto mr-auto">
+              <div>
+                <label>Logo Image</label>
+              </div>
+              <app-image-upload [message]=companyLogo></app-image-upload>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="update ml-auto mr-auto">
+            <button [disabled]="loading" type="submit" class="btn btn-primary btn-round" (click)="updateCompanyInfo()">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Save</button>
+          </div>
+        </div>
+      </form>
+
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel  *ngIf=rootAccount id={{settingForms[2].formId}}>
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="container-fluid text-left pl-0 text-danger">{{settingForms[2].title}}</h6>
+        </div>
+        <div>
+          <li class="expand" style="margin:20px" >
+            <i *ngIf=!settingForms[2].unlocked (click)="unlockSecurityArea()" class="nc-icon nc-key-25"></i>
+            <i *ngIf=settingForms[2].unlocked (click)="lockSecurityArea()" class="nc-icon nc-lock-circle-open"></i>
+          </li>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+      <section>
+        <div class="row ml-3 mr-3">
+          <div class="col mb-3">
+              <h4 class="card-title"> Account Manager</h4>
+          </div>
+          <div class="col text-right">
+             <button class="btn btn-outline-primary" >New Account</button>
+         </div>
+         <div class="table-responsive">
+         <table class="table">
+           <thead class=" text-primary">
+             <th>
+               Account Id
+             </th>
+             <th>
+               Account Holder
+             </th>
+             <th>
+               Role
+             </th>
+             <th>
+               Register Time
+             </th>
+             <th>
+               Last Login Time
+             </th>
+             <th></th>
+             <th></th>
+           </thead>
+           <tbody>
+             <tr>
+               <td>
+                 Admin1
+               </td>
+               <td>
+                 Dakota Rice
+               </td>
+               <td>
+                 Admin
+               </td>
+               <td>
+                 2020/07/21 16:38:00
+               </td>
+               <td>
+                 2020/07/23 15:00:00
+               </td>
+               <td class="align-items-right">
+                   <li class="add" placement="bottom" ngbTooltip="Edit"><i (click)="editThisAccount('0')"class="nc-icon nc-ruler-pencil"></i></li>
+               </td>
+               <td class="align-items-left">
+                   <li class="add" placement="bottom" ngbTooltip="Remove"><i (click)="removeThisAccount('0')"class="nc-icon nc-simple-remove"></i></li>
+               </td>
+             </tr>
+           </tbody>
+         </table>
+         </div>
+      </div>
+      </section>
+
+      <section>
+        <div class="row ml-3 mr-3">
+            <h4 class="card-title"> Password Settings</h4>
+        </div>
+        <form>
+          <div class="row ml-3 mr-3">
+            <div class="col-md-4 pr-1">
+              <div class="form-group">
+                <label>New Root Password</label>
+                <input type="password" class="form-control" >
+              </div>
+            </div>
+           </div>
+
+           <div class="row ml-3 mr-3">
+            <div class="col-md-4 pr-1">
+              <div class="form-group">
+                <label>Re-Enter New Root Password</label>
+                <input type="password" class="form-control" >
+              </div>
+            </div>
+           </div>
+
+
+           <div class="row ml-3 mr-3" *ngIf=alert[0].status>
+            <div class="ml-3">
+              <p>
+                <ngb-alert [type]=alert[0].status (close)="closeAlert(alert[0])">{{ alert[0].message }}</ngb-alert>
+              </p>
+            </div>
+          </div>
+
+
+           <div class="row ml-3 mr-3">
+            <div class="ml-3">
+              <button [disabled]="loading" type="submit" class="btn btn-warning btn-round">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1" (click)="resetRootPassword()"></span>
+                Reset Root Password</button>
+            </div>
+          </div>
+
+
+        </form>
+      </section>
+
+
+      <section>
+        <div class="row ml-3 mr-3">
+            <h4 class="card-title"> My Private Key</h4>
+        </div>
+
+        <div class="row ml-3 mr-3 jumbotron">
+          <p class="lead">{{private_key}}</p>
+        </div>
+
+        <div class="row ml-3 mr-3" *ngIf=alert[1].status>
+          <div class="ml-3">
+            <p>
+              <ngb-alert [type]=alert[1].status (close)="closeAlert(alert[1])">{{ alert[1].message }}</ngb-alert>
+            </p>
+          </div>
+        </div>
+
+
+        <div class="row ml-3 mr-3">
+          <div>
+            <button [disabled]="loading" type="submit" class="btn btn-primary btn-round" (click)="generateNewPrivateKey()">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Generate New Private Key</button>
+          </div>
+
+          <div class="ml-3">
+            <button [disabled]="loading" type="submit" class="btn btn-warning btn-round" (click)="uploadNewPrivateKey()">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Reset My Private Key</button>
+          </div>
+        </div>
+
+      </section>
+       
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+
+<ng-template #security let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Verify Your Password</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="password">Root Password</label>
+          <input #password id="password" class="form-control" type="password">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close(password.value)">Submit</button>
+    </div>
+</ng-template>

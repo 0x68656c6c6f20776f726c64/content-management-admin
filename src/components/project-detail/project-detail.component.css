@@ -1,0 +1,29 @@
+li{
+    list-style-type: none;
+    display: inline-block;
+}
+.expand{
+    font-size: 20px;
+    cursor: pointer;
+}
+.expand :hover{
+    color: #ef8157;
+}
+.add{
+    font-size: 20px;
+    cursor: pointer;
+}
+.add :hover{
+    color: #ef8157;
+}
+.nc-icon{
+    margin:10px;
+    cursor: pointer;
+}
+.upload{
+    vertical-align: middle;
+    font-size: 25px;
+}
+.upload :hover{
+    color: #ef8157;
+}

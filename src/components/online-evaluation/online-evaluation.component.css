@@ -1,0 +1,23 @@
+li{
+    list-style-type: none;
+    display: inline-block;
+}
+.add{
+    font-size: 20px;
+    cursor: pointer;
+}
+.add :hover{
+    color: #ef8157;
+}
+.hide{
+   display:none
+}
+.red{
+    color:red
+}
+.black{
+    color:black;
+}
+/* .wider{
+    height: 100px;
+} */

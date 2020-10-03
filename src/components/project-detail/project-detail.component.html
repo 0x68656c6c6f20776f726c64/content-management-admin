@@ -1,0 +1,167 @@
+<div class="row">
+  <div class="col mb-4">
+      <li class="upload" style="margin:10px" placement="bottom" ngbTooltip="Upload This Project"><i class="nc-icon nc-cloud-upload-94" [class.hide]="loading"></i><span *ngIf="loading" class="nc-icon spinner-border spinner-border-sm mr-1"></span></li>
+  </div>
+</div>
+
+<ngb-accordion activeIds="ngb-panel-0">
+    <ngb-panel>
+      <ng-template ngbPanelTitle>
+          project details
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <form (ngSubmit)="onSubmit()" class="ml-4">
+            <div class="row">
+                <div class="col-md-4 pr-1">
+                  <div class="update ml-auto mr-auto">
+                    <div class="mt-4">
+                        <label for="title">Title</label>
+                    </div>
+                    <input [(ngModel)]="model.title" type="text" name="title" id="title">
+                  </div>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-4 pr-1">
+                  <div class="update ml-auto mr-auto">
+                    <div class="mt-4">
+                        <label for="subTitle">SubTitle</label>
+                    </div>
+                    <input [(ngModel)]="model.subtitle" type="text" name="subtitle" id="subtitle">
+                  </div>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="mt-4">
+                        <label for="subTitle">Description</label>
+                    </div>
+                    <textarea [(ngModel)]="model.description" type="text" name="description" id="description" rows="10" cols="50"></textarea>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-4 pr-1">
+                  <div class="update ml-auto mr-auto">
+                    <div class="mt-4">
+                      <label>Cover Image</label>
+                    </div>
+                    <app-image-upload [message]=coverImage></app-image-upload>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="mt-4">
+                            <label for="text">Content</label>
+                        </div>
+                        <ckeditor [editor]="projectDetail" [data]=model.content></ckeditor>
+                    </div>
+                  </div>
+              </div>
+        
+            
+        </form>
+        
+      </ng-template>
+    </ngb-panel>
+
+
+    <ngb-panel>
+      <ng-template ngbPanelTitle>
+        project flow
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row ml-3 mr-3">
+          <div class="col mb-3">
+              <h4 class="card-title"> Project Flows</h4>
+          </div>
+          <div class="col text-right">
+             <button class="btn btn-outline-primary" (click)="addNewFlow()">New Flow</button>
+         </div>
+        </div>
+          <div class="row ml-3" *ngFor="let pf of model.projectFlow; index as i">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="mt-4">
+                        <label for="text">{{pf.title}}</label>
+                    </div>
+                    <ckeditor [editor]="projectFlow[i]" [data]=pf.content></ckeditor>
+                </div>
+              </div>
+          </div>
+      </ng-template>
+    </ngb-panel>
+
+
+
+
+    <ngb-panel>
+        <ng-template ngbPanelTitle>
+          project Requirement
+        </ng-template>
+        <ng-template ngbPanelContent>
+
+          <div class="row ml-2">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <ckeditor [editor]="projectRequirement" [data]=model.projectRequirement></ckeditor>
+                </div>
+              </div>
+          </div>
+    
+        </ng-template>
+      </ngb-panel>
+
+
+
+      <ngb-panel>
+        <ng-template ngbPanelTitle>
+          project Fee
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="row ml-3 mr-3">
+            <div class="col mb-3">
+                <h4 class="card-title"> Project Fees</h4>
+            </div>
+            <div class="col text-right">
+               <button class="btn btn-outline-primary" (click)="addNewFeeItem()">New Item</button>
+           </div>
+           <div class="table-responsive">
+           <table class="table">
+             <thead class=" text-primary">
+               <th>
+                 Item
+               </th>
+               <th>
+                 Cost
+               </th>
+               <th></th>
+               <th></th>
+             </thead>
+             <tbody>
+               <tr *ngFor="let c of model.projectFee; index as i">
+                 <td>
+                   {{c.title}}
+                 </td>
+                 <td>
+                   {{c.amount | currency:'CAD'}}
+                 </td>
+                 <td class="align-items-right">
+                     <li class="add" placement="bottom" ngbTooltip="Edit"><i (click)="editThisItem(i)"class="nc-icon nc-ruler-pencil"></i></li>
+                 </td>
+                 <td class="align-items-left">
+                     <li class="add" placement="bottom" ngbTooltip="Remove"><i (click)="removeThisItem(i)"class="nc-icon nc-simple-remove"></i></li>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+           </div>
+        </div>
+        </ng-template>
+      </ngb-panel>
+</ngb-accordion>

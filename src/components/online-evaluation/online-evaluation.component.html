@@ -1,0 +1,175 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col card-title">
+                     <h6>Online-Evaluation Form Groups</h6>
+                 </div>
+                 <div class="col-auto text-right">
+                      <li class="add" style="margin:20px" placement="left" ngbTooltip="Create Form Group"><i (click)="addFormGroup()"class="nc-icon nc-simple-add"></i></li>
+                 </div>
+              </div>
+            </div>
+            <div class="card-body">
+                <ngb-accordion activeIds="static-1">
+                      <ngb-panel *ngFor="let f of model.formGroups">
+                        <ng-template ngbPanelHeader>
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                              <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">{{f.title}} (id: {{f.groupId}})</button>
+                            </div>
+                            <div>
+                              <button class="btn btn-outline-danger btn-sm" [class.hide] = !removeableFormGroup(f.groupId) (click)="removeFormGroup(f.groupId)">Remove</button>
+                              <li class="add" style="margin:20px" placement="left" ngbTooltip="Create Input"><i (click)="addInput(f.groupId)"class="nc-icon nc-simple-add"></i></li>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <table class="table table-striped">
+                              <tbody>
+                                <tr *ngFor="let input of f.inputs; index as i">
+                                  <td>{{i}}</td>
+                                  <td>
+                                    {{input.inputId}}
+                                    <div>
+                                      <small class="text-muted">{{input.lable}}:{{input.placeholder}}</small>
+                                    </div>
+                                  </td>
+                                  <td class="text-right">
+                                      <button class="btn btn-outline-primary btn-sm" (click)="editFormInput(f.groupId,input.inputId)">Edit</button>
+                                  </td>
+                                  <td>
+                                      <button [disabled]="loading" class="btn btn-outline-danger btn-sm" (click)="removeInput(f.groupId,input.inputId)">
+                                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                          Remove
+                                      </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </ng-template>
+                      </ngb-panel>
+                  </ngb-accordion>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col card-title">
+                   <h6>Online-Evaluations</h6>
+               </div>
+               <div class="col-auto text-right d-flex align-items-top justify-content-between">
+                    <!-- <button class="btn btn-outline-warning btn-sm" (click)="revertEvaluations()">
+                      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                      Revert</button> -->
+                    <li class="add" style="margin:10px" placement="bottom" ngbTooltip="Upload Evaluations"><i (click)="updateEvaluations()"class="nc-icon nc-cloud-upload-94" [class.hide]="loading"></i><span *ngIf="loading" class="nc-icon spinner-border spinner-border-sm mr-1"></span></li>
+                    <li class="add" style="margin:10px" placement="bottom" ngbTooltip="Create Evaluation"><i (click)="addNewOnlineEvaluation()"class="nc-icon nc-simple-add"></i></li>
+               </div>
+            </div>
+          </div>
+          <div class="card-body">
+              <ngb-accordion  activeIds="static-2">
+                    <ngb-panel *ngFor="let oe of model.onlineEvaluations; index as i" [id]=oe.evaluationId  [disabled] = oe.disable>
+                      <ng-template ngbPanelHeader>
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div>
+                            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">ONLINE EVALUATION {{i+1}}</button>
+                          </div>
+                          <div>
+                            <div ngbDropdown class="d-inline-block">
+                              <button class="btn btn-outline-primary btn-sm" [class.hide] = oe.disable  ngbDropdownToggle>Add</button>
+                              <div ngbDropdownMenu>
+                                <button ngbDropdownItem  *ngFor="let f of model.formGroups" [class.hide]="hideThisAdableForm(oe.evaluationId,f.groupId)"    (click)="addThisFormGroup(oe.evaluationId,f.groupId)">{{f.title}}:{{f.groupId}}</button>
+                              </div>
+                            </div>
+                            <button class="btn btn-outline-warning btn-sm" [class.hide] = oe.disable (click)="disabledEvaluation(oe.evaluationId)">Disable</button>
+                            <button class="btn btn-outline-primary btn-sm" [class.hide] = !oe.disable [disabled]="!canEnableThisEvaluation(oe.evaluationId)"(click)=" enableEvaluation(oe.evaluationId)">Enable</button>
+                            <button class="btn btn-outline-danger btn-sm" [class.hide] = !oe.disable (click)="removeEvaluation(oe.evaluationId)">Remove</button>
+                          </div>
+                        </div>
+                        <div class="mb-5">
+                          <small class="text-muted">Related With Project: {{oe.projectId}}</small>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbPanelContent>
+                        <table class="table table-striped">
+                            <tbody>
+                              <tr *ngFor="let f of oe.formGroupsId; index as i">
+                                <td>{{i+1}}</td>
+                                <td>
+                                  {{f}}
+                                </td>
+                                <td class="d-flex align-items-right justify-content-between">
+                                  <li class="add" placement="bottom" ngbTooltip="Remove"><i (click)="removeFormGroupFromOnlineEvaluation(oe.evaluationId,f)"class="nc-icon nc-simple-remove"></i></li>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <div>
+          <h3 class="container-fluid text-left pl-0">SUBMISSIONS</h3>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table ml-2">
+            <thead class=" text-primary">
+              <th>
+                Name
+              </th>
+              <th>
+                Related Project
+              </th>
+              <th>
+                Submit Time
+              </th>
+              <th>
+                Status
+              </th>
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of model.submissions">
+                <td>
+                  {{s.name}}
+                </td>
+                <td>
+                  {{s.relatedTitle}}
+                </td>
+                <td>
+                  {{s.submitTime}}
+                </td>
+                <td [class]="s.status=='unread'? 'red': 'black'">
+                  {{s.status}}
+                </td>
+                <td class="align-items-right">
+                    <li class="add" placement="bottom" ngbTooltip="See Detail"><i (click)="seeSubmissionDetail(s.submissionId)"class="nc-icon nc-zoom-split"></i></li>
+                </td>
+                <td class="align-items-left">
+                  <li class="add" placement="bottom" ngbTooltip="Remove"><i (click)="removeThisEvaluationSubmission(s.submissionId)"class="nc-icon nc-simple-remove"></i></li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

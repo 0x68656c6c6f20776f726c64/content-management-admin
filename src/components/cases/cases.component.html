@@ -1,0 +1,68 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<div class="row mb-3">
+  <div class="col">
+      <!-- <button class="btn btn-outline-warning">Revert</button> -->
+      <li class="upload" style="margin:10px" placement="bottom" ngbTooltip="Upload Cases"><i (click)="updateCases()"class="nc-icon nc-cloud-upload-94" [class.hide]="loading"></i><span *ngIf="loading" class="nc-icon spinner-border spinner-border-sm mr-1"></span></li>
+  </div>
+  <div class="col text-right mr-4">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>Cases Page Settings</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownForm1">
+        <form class="px-4 py-3">
+          <div class="form-group" [formGroup]="caseRowForm">
+            <label for="casesColNumber">Cases Display Per Row</label>
+            <input type="number" class="form-control" min="1" formControlName = caseRow>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngFor="let c of model.cases">
+    <div class="col-md-12">
+      <div class="card demo-icons">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="head-image mb-4" [src]=c.image>
+                  </div>
+                <div class="col-6">
+                    <h5 class="card-title">{{c.title}}</h5>
+                    <p class="card-category">{{c.subtitle}}</p>
+                </div>
+                <div class="col auto">
+                    <div class="float-right mt-2"id="icons-wrapper">
+                        <ul class="right-icon">
+                          <li *ngIf="!c.disabled" class="detail" placement="bottom" ngbTooltip="See Case Detail"><i class="nc-icon nc-zoom-split"></i></li>
+                          <li class="edit" placement="bottom" ngbTooltip="Edit Case"><i class="nc-icon nc-ruler-pencil" (click)="editCase(c.articleId)"></i></li>
+                          <li *ngIf="c.disabled" class="remove" placement="bottom" ngbTooltip="Remove Case"><i class="nc-icon nc-basket" (click)="deleteThisCase(c.articleId)"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="float-right mt-2 mr-2"id="icons-wrapper">
+                  <button *ngIf="!c.disabled" type="submit" class="btn btn-outline-warning btn-sm"  style="font-size: small;" (click)="disableCases(c.articleId)">
+                    Disable</button>
+                  <button *ngIf="c.disabled" type="submit" class="btn btn-outline-primary btn-sm"  style="font-size: small;" (click)="enableCases(c.articleId)">
+                      Enable</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+      <div class="col-md-12">
+        <div class="card demo-icons">
+          <div class="card-header">
+          </div>
+          <div class="card-body all-icons">
+            <div id="icons-wrapper" style="text-align: center;">
+                 <li class="add mb-3" placement="bottom" ngbTooltip="Create Cases"><i (click)="addCases()"class="nc-icon nc-simple-add"></i></li>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+  

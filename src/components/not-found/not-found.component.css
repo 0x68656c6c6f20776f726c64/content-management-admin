@@ -1,0 +1,11 @@
+.middle-card{
+    margin-left: 10%;
+    width:80%;
+    margin-top: 20%;
+    margin-bottom: 40%;
+}
+.card-content{
+    height: 300px;
+    align-items: center;
+    display: flex;
+}

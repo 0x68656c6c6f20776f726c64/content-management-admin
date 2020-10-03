@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <div class="sidebar" data-color="white" data-active-color="danger">
+        <sidebar-cmp></sidebar-cmp>
+    </div>
+    <div class="main-panel">
+        <navbar-cmp></navbar-cmp>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+        <footer-cmp></footer-cmp>
+    </div>
+</div>
+
+<ng-template confirm>
+    <app-remove-confirm-modal></app-remove-confirm-modal>
+ </ng-template>
+
+ <ng-template create>
+    <app-form-modal></app-form-modal>
+</ng-template>
+
+<ng-template content>
+    <app-content-modal></app-content-modal>
+</ng-template>
+
+<ng-template image-view>
+    <app-image-view></app-image-view>
+</ng-template>

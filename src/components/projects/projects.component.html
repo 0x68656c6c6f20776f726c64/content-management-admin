@@ -1,0 +1,78 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<div class="row">
+  <div class="col">
+      <button class="btn btn-outline-info" (click)="addNewCategory()">New Category</button>
+      <button [class.disabled]="selected.key === 'All' || selected.key === 'Hot'" class="btn btn-outline-warning" (click)="editThisCategory()">Edit Category</button>
+      <li class="upload" style="margin:10px" placement="bottom" ngbTooltip="Upload Projects"><i (click)="updateProjects()"class="nc-icon nc-cloud-upload-94" [class.hide]="loading"></i><span *ngIf="loading" class="nc-icon spinner-border spinner-border-sm mr-1"></span></li>
+  </div>
+  <div class="col text-right">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{selected.title}}</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem *ngFor="let c of categories" (click)="selectThis(c)">{{c.title}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngFor="let p of displayProjects">
+    <div class="col-md-12">
+      <div class="card demo-icons">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-2" >
+                  <img class="head-image mb-4" [src]=p.image>
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title">{{p.title}}</h5>
+                    <p class="card-category">{{p.subtitle}}</p>
+                </div>
+                <div class="col auto">
+                    <div class="float-right mt-2"id="icons-wrapper">
+                        <ul class="right-icon">
+                            <li *ngIf="!p.disabled" class="detail" placement="bottom" ngbTooltip="See This Project Page"><i class="nc-icon nc-zoom-split"></i></li>
+                            <li class="edit" placement="bottom" ngbTooltip="Edit Project" (click)="editThisProject(p.projectId)"><i class="nc-icon nc-ruler-pencil"></i></li>
+                            <li *ngIf="p.disabled" class="remove" placement="bottom" (click)="openRemoveConfirmModal(p.projectId)"  ngbTooltip="Remove Project"><i class="nc-icon nc-basket"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="float-right mt-2 mr-2"id="icons-wrapper">
+                  <button *ngIf="!p.disabled" [disabled]="loading" type="submit" class="btn btn-outline-warning btn-sm"  style="font-size: small;" (click)="disableThisProject(p.projectId)">
+                    Disable</button>
+                  <button *ngIf="p.disabled" [disabled]="loading" type="submit" class="btn btn-outline-primary btn-sm"  style="font-size: small;" (click)="enableThisProject(p.projectId)">
+                      Enable</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div  class="row">
+    <div class="col-md-12" [class.disabled]="selected.key === 'All' || selected.key === 'Hot'">
+      <div class="card demo-icons">
+        <div class="card-header">
+        </div>
+        <div class="card-body all-icons">
+          <div id="icons-wrapper" style="text-align: center;">
+               <li class="add mb-3" placement="bottom" ngbTooltip="Create Project"><i (click)="addProject(selected.key)" class="nc-icon nc-simple-add"></i></li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showRemoveCat()" class="row">
+    <div class="col-md-12" [class.disabled]="selected.key === 'All' || selected.key === 'Hot'">
+      <div class="card demo-icons">
+        <div class="card-header">
+        </div>
+        <div class="card-body all-icons">
+          <div id="icons-wrapper" style="text-align: center;">
+               <li class="add mb-3" placement="bottom"><button (click)="RemoveThisCategory()" class="btn btn-outline-danger btn-sm">Delete this Category</button></li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
