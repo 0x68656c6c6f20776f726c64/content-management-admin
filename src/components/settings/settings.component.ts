@@ -54,8 +54,6 @@ export class SettingsComponent implements OnInit {
   companyLogo:ImageUploadMessage;
   slides:ImageUploadMessage[];
 
-  modifiedImage:ModifiedImage[]=[];
-
   settingForms = [
     {
       title:"Page Settings",
@@ -91,9 +89,9 @@ export class SettingsComponent implements OnInit {
     }
     this.model = this.route.snapshot.data.setting;
     this.slides = this.model.slides.map(function(s){
-      return {id:s,status:'normal'}
+      return {id:s,content:null,status:'normal'}
     })
-    this.companyLogo = {id:this.model.companyInfo.companyLogo,status:'normal'};
+    this.companyLogo = {id:this.model.companyInfo.companyLogo,content:null,status:'normal'};
     // if(localStorage.getItem('private_key'))
     // {
     //   this.private_key = localStorage.getItem('private_key');
@@ -208,94 +206,80 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSlides(){
-    console.log(this.modifiedImage);
+    this.model.slides=this.slides.map(s=>s.id);
     this.slides.forEach(
       s=>{
-        if(this.modifiedImage.find(mi=>mi.id==s.id))
+        if(s.content!=null)
         {
-          s.status='pending';
+          this.image.uploadSlideImage({id:s.id,content:s.content,status:s.status}).subscribe(
+            (response:fileReturn)=>{
+              if(response.result.message!='success')
+              {
+                this.toastService.show('failed to modify slide: '+s.id+'\n Error: '+response.result.message,{classname:'bg-danger text-light',delay:2000});
+                s.status=='fail';
+              }
+              else
+              {
+                s.content=null;
+                s.status=='success';
+              }
+            }
+          )
         }
       }
     )
-    this.modifiedImage.forEach(
-      mi=>{
-        this.image.uploadImage(mi).subscribe((response:fileReturn)=>{
-          if(mi.status=='delete' && response.result.message=='success')
-          {
-            this.toastService.show('successful delete slide: '+mi.id,{classname:'bg-success text-light',delay:2000});
-            this.modifiedImage.splice(this.modifiedImage.findIndex(e=>e.id==mi.id),1);
-          }
-          else if(response.result.message=='success')
-          {
-            this.slides.find(s=>s.id==mi.id).status='success';
-            this.modifiedImage.splice(this.modifiedImage.findIndex(e=>e.id==mi.id),1);
-          }
-          else
-          {
-            this.toastService.show('failed to modify slide: '+mi.id+'\n Error: '+response.result.message,{classname:'bg-danger text-light',delay:2000});
-          }
-        })
-      }
-    )
-    
-  }
-
-  updateNewSlideImageSource(id:string,newImage:File){
-    var modified = this.modifiedImage.find(mi=>mi.id==id);
-    const existed = this.model.slides.includes(id);
-    if(modified)
-    {
-      modified.content=newImage;
-    }
-    else if(existed)
-    {
-      this.modifiedImage.push({id:id,content:newImage,status:'update'});
-    }
-    else
-    {
-      this.modifiedImage.push({id:id,content:newImage,status:'create'});
-    }
-  }
-
-  addNewSlide(){
-    const newId = this.generateNewSlidesId()
-    this.slides.push({id:newId,status:'normal'});
-  }
-
-  removeThisSlide(slideIndex:number){
-    if(this.modifiedImage.length>0)
-    {
-      var modified = this.modifiedImage.find(mi=>mi.id==this.slides[slideIndex].id);
-      const existed = this.model.slides.includes(this.slides[slideIndex].id);
-      if(modified && existed)
+    this.settingService.updateSlides(this.model.slides).subscribe((result:httpReturn)=>{
+      if(result.message=='success')
       {
-        modified.content=null;
-        modified.status='delete';
-      }
-      else if(modified)
-      {
-        this.modifiedImage.splice(this.modifiedImage.findIndex(mi=>mi.id==this.slides[slideIndex].id),1);
-      }
-      else if(existed)
-      {
-        this.modifiedImage.push({id:modified.id,content:null,status:'delete'});
+        this.toastService.show('successful update slides',{classname:'bg-success text-light',delay:2000});
       }
       else
       {
-        this.modifiedImage.push({id:this.slides[slideIndex].id,content:null,status:'delete'});
+        this.toastService.show('failed update slides \n Error: '+result.message,{classname:'bg-danger text-light',delay:2000});
       }
+    })    
+  }
+
+  updateNewSlideImageSource(id:string,newImage:File){
+    this.slides.find(s=>s.id==id).content=newImage;
+  }
+
+  addNewSlide(){
+    const newId = this.generateNewSlidesId();
+    this.slides.push({id:newId,content:null,status:'initial'});
+  }
+
+  removeThisSlide(slideIndex:number){
+    if(this.slides[slideIndex].status!='initial')
+    {
+      this.image.removeThisImage(this.slides[slideIndex].id).subscribe(
+        (result:httpReturn)=>{
+          if(result.message=='success')
+          {
+            this.model.slides.splice(this.model.slides.findIndex(ms=>ms==this.slides[slideIndex].id));
+            this.settingService.updateSettings(this.model).subscribe(
+              (response:httpReturn)=>{
+                if(response.message=='success')
+                {
+                  this.toastService.show('successful delete slides',{classname:'bg-success text-light',delay:2000});
+                }
+              }
+            )
+            this.slides.splice(slideIndex,1);
+          }
+        }
+      )
     }
     else
     {
-      this.modifiedImage.push({id:this.slides[slideIndex].id,content:null,status:'delete'});
+      this.slides.splice(slideIndex,1);
     }
-    this.slides.splice(slideIndex,1);
   }
 
   updateHomePageSettings(){}
 
   private generateNewSlidesId(){
-    var lastSlideId = this.model.slides[this.model.slides.length-1];
+    var lastSlideId = this.slides[this.slides.length-1].id;
     var number = parseInt(lastSlideId.slice(5),10);
     return 'slide'+(number+1);
   }

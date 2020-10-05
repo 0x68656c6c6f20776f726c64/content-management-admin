@@ -5,6 +5,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { newsAndAboutUsDescription } from 'src/models/helpers/newsAndAboutUSDescription';
 import { httpReturn } from 'src/models/httpReturn';
+import { file } from 'src/models/schemas/file';
 import { companyInfo, settings } from 'src/models/schemas/settings';
 import { settingsViewModel } from 'src/models/viewModels/settingsViewModel';
 
@@ -24,8 +25,17 @@ export class SettingsService {
     return this.http.put<httpReturn>(this.API_URL+'/settings/update',param);
   }
 
+  updateSlides(newSlides:string[]):Observable<httpReturn>{
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
+      mergeMap(setting=>{
+        setting.slides=newSlides;
+        return this.http.put<httpReturn>(this.API_URL+'/settings/update',setting)
+      })
+    )
+  }
+
   updateDescription(param:newsAndAboutUsDescription):Observable<httpReturn>{
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       mergeMap(setting=>{
         setting.news_description = param.news_descritpion;
         setting.about_us_description = param.about_us_description;
@@ -35,7 +45,7 @@ export class SettingsService {
   }
 
   updateCompanyInfo(param:companyInfo){
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       mergeMap(setting=>{
         setting.companyInfo = param;
         return this.http.put<httpReturn>(this.API_URL+'/settings/update',setting)
@@ -44,19 +54,19 @@ export class SettingsService {
   }
 
   getCaseDisplayRow():Observable<number>{
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       map(res=>{return res.caseDisplayRow})
     )
   }
 
   getNewsLimit():Observable<number>{
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       map(res=>{return res.newsPageLimit})
     )
   }
 
   updateCaseDisplayRow(displayRow:number):Observable<httpReturn>{
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       mergeMap(setting=>{
         setting.caseDisplayRow = displayRow
         return this.http.put<httpReturn>(this.API_URL+'/settings/update',setting)
@@ -65,7 +75,7 @@ export class SettingsService {
   }
 
   updateNewsLimit(newsLimit:number):Observable<httpReturn>{
-    return this.http.get<settingsViewModel>(this.API_URL+'/settings/').pipe(
+    return this.http.get<settings>(this.API_URL+'/settings/').pipe(
       mergeMap(setting=>{
         setting.newsPageLimit = newsLimit;
         return this.http.put<httpReturn>(this.API_URL+'/settings/update',setting)

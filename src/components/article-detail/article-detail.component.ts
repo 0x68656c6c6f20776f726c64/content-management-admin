@@ -31,7 +31,7 @@ export class ArticleDetailComponent implements AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.coverImage = {id:this.model.articleId+'-cover',status:'normal'};
+    this.coverImage = {id:this.model.articleId+'-cover',content:null,status:'normal'};
   }
 
   onSubmit(){}

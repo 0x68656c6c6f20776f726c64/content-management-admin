@@ -12,6 +12,6 @@ export class settingsResolver implements Resolve<settings> {
     constructor(private settingService:SettingsService, private router: Router) { }
     
     resolve(route: ActivatedRouteSnapshot): Observable<settings> {  
-        return this.settingService.getSettings();
+        return this.settingService.getSettings()
       }  
 }

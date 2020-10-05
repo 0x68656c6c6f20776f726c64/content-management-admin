@@ -36,7 +36,7 @@ export class ProjectDetailComponent implements AfterViewInit {
         var newEditor = ClassicEditor;
         this.projectFlow.push(newEditor);
     });
-    this.coverImage = {id:this.model.projectId+'-cover',status:'normal'};
+    this.coverImage = {id:this.model.projectId+'-cover',content:null,status:'normal'};
     // this.route.params.subscribe(params=>{
     //   this.model = this.projectService.getProjectWithId(params['projectId']);
     //   this.model.projectFlow.forEach(element => {

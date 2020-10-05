@@ -31,7 +31,7 @@
             <div class="update ml-auto mr-auto" *ngFor="let s of slides; index as i">
               <div class="row">
                 <div class="col-sm">
-                  <label>slide {{i+1}}</label>
+                  <label>SLIDE ID : {{s.id}}</label>
                 </div>
                 <div class="col-sm text-right">
                   <li class="add" placement="bottom" (click)="removeThisSlide(i)" ngbTooltip="Remove"><i class="nc-icon nc-simple-remove"></i></li>
