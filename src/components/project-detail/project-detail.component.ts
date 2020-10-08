@@ -4,8 +4,10 @@ import * as CKSource from './../../ckeditor/build/cksource';
 import { ActivatedRoute } from '@angular/router';
 import { projectDetailViewModel } from 'src/models/viewModels/projectsViewModels/projectDetailViewModel';
 import { ImageUploadMessage } from 'src/models/helpers/ImageUploadMessage';
+import { environment } from 'src/environments/environment';
 
 const ClassicEditor = CKSource.ClassicEditor;
+const CKFinder = CKSource.CKFinder;
 
 @Component({
   selector: 'app-project-detail',
@@ -14,8 +16,9 @@ const ClassicEditor = CKSource.ClassicEditor;
 })
 export class ProjectDetailComponent implements AfterViewInit {
 
-  public projectDetail = ClassicEditor;
+  private API_URL = environment.API_URL;
 
+  public projectDetail=ClassicEditor;
   public projectRequirement = ClassicEditor;
 
   public projectFlow = []
@@ -33,10 +36,29 @@ export class ProjectDetailComponent implements AfterViewInit {
   ngOnInit(): void {
     this.model = this.route.snapshot.data.project;
     this.model.projectFlow.forEach(element => {
-        var newEditor = ClassicEditor;
+        var newEditor = ClassicEditor
         this.projectFlow.push(newEditor);
     });
     this.coverImage = {id:this.model.projectId+'-cover',content:null,status:'normal'};
+    // this.projectDetail = ClassicEditor.create(
+    //   {
+    //     plugins: [CKFinder],
+    //     ckfinder:{
+    //       uploadUrl:this.API_URL+'/pictures/project-upload?projectId='+this.model.projectId+'&field=detail',
+
+    //       options: {
+    //         resourceType: 'project-Image'
+    //     }
+    //   }
+        // simpleUpload:{
+        //   uploadUrl:this.API_URL+'/pictures/project-upload?projectId='+this.model.projectId+'&field=detail',
+        //   withCredentials:true,
+        //   headers:{
+        //     Authorization: 'Bearer '+localStorage.getItem('token')
+        //   }
+        // }
+      // });
+  
     // this.route.params.subscribe(params=>{
     //   this.model = this.projectService.getProjectWithId(params['projectId']);
     //   this.model.projectFlow.forEach(element => {
