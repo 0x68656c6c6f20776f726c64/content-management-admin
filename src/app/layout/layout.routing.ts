@@ -15,6 +15,7 @@ import { caseResolver } from 'src/components/cases/cases.resolve.service';
 import { newsResolver } from 'src/components/news/news.resolve.service';
 import { onlineEvaluationPageResolver } from 'src/components/online-evaluation/online-evaluation.resolve.service';
 import { settingsResolver } from 'src/components/settings/settings.resolver.service';
+import { articleDetailResolver } from 'src/components/article-detail/article-detail.resolve.service';
 
 export const LayoutRoutes:Routes=[
     {
@@ -49,7 +50,12 @@ export const LayoutRoutes:Routes=[
             setting:settingsResolver
           }
         },
-        {path:'articles/:articleId',component:ArticleDetailComponent},
+        {
+          path:'article-detail/:articleId',component:ArticleDetailComponent,
+          resolve:{
+            article:articleDetailResolver
+          }
+        },
         {
           path:'project-detail/:projectId',component:ProjectDetailComponent,
           resolve:{

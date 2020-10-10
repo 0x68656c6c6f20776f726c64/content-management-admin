@@ -12,6 +12,7 @@ import { articleCardViewModel } from 'src/models/viewModels/articleViewModel';
 import { QuestionBase } from 'src/models/questions';
 import { httpReturn } from 'src/models/httpReturn';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-news',
@@ -135,6 +136,11 @@ export class NewsComponent implements OnInit {
 
   editNews(articleId:string){
     this.router.navigate(['admin/article-detail',articleId]);
+  }
+
+  getImageSource(imageId:string)
+  {
+    return environment.API_URL+'/pictures/'+imageId;
   }
 
 

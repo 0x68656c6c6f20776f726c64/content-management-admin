@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { httpReturn } from 'src/models/httpReturn';
 import { QuestionBase } from 'src/models/questions';
 import { articleCardViewModel } from 'src/models/viewModels/articleViewModel';
@@ -135,6 +136,11 @@ export class CasesComponent implements OnInit {
 
   editCase(articleId:string){
     this.router.navigate(['admin/article-detail',articleId]);
+  }
+
+  getCoverImage(id:string)
+  {
+    return environment.API_URL+'/pictures/'+id;
   }
 
   private sortArticles(a:articleCardViewModel,b:articleCardViewModel)

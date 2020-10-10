@@ -18,7 +18,7 @@ export class ImageService {
 
   constructor(private http:HttpClient) { }
 
-  uploadSlideImage(image:ImageUploadMessage):Observable<fileReturn>{
+  uploadImage(image:ImageUploadMessage):Observable<fileReturn>{
     const data = new FormData();
     data.append('image',image.content);
     if(image.status=='initial')
@@ -27,7 +27,7 @@ export class ImageService {
     }
     else
     {
-      return this.http.post<fileReturn>(this.imageURL+'upload?fileId='+image.id+'&status=upload',data);
+      return this.http.post<fileReturn>(this.imageURL+'upload?fileId='+image.id+'&status=update',data);
     }
   }
 

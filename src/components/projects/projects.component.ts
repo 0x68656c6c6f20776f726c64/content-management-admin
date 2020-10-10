@@ -11,6 +11,7 @@ import { CreateService } from '../modals/form-modal/form-modal.component';
 import { QuestionService } from 'src/services/question/question.service';
 import { QuestionBase } from 'src/models/questions';
 import { projectCreate } from 'src/models/viewModels/projectsViewModels/projectCreateModel';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-projects',
@@ -271,6 +272,11 @@ export class ProjectsComponent implements OnInit {
         () => {
           this.loading = false;
         });
+  }
+
+  getImage(imageId:string)
+  {
+    return environment.API_URL+'/pictures/'+imageId;
   }
 
 

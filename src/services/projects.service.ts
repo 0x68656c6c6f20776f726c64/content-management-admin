@@ -46,9 +46,7 @@ export class ProjectsService {
 
   updateProjectsWithId(projectParam:projectDetailViewModel)
   {
-     return this.http.put(this.API_URL+'/projects/update',{
-       body:projectParam
-     });
+     return this.http.put(this.API_URL+'/projects/update',projectParam);
   }
 
   createProject(projectParam:projectCreate):Observable<httpReturn>

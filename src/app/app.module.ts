@@ -28,6 +28,7 @@ import { onlineEvaluationPageResolver } from 'src/components/online-evaluation/o
 import { ContentModalComponent, ContentService, ContentState, ContentTemplateDirective } from 'src/components/modals/content-modal/content-modal.component';
 import { settingsResolver } from 'src/components/settings/settings.resolver.service';
 import { ImageViewComponent, ImageViewService, ImageViewState, ImageViewTemplateDirective } from 'src/components/modals/image-view/image-view.component';
+import { articleDetailResolver } from 'src/components/article-detail/article-detail.resolve.service';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ImageViewComponent, ImageViewService, ImageViewState, ImageViewTemplate
     caseResolver,
     newsResolver,
     onlineEvaluationPageResolver,
+    articleDetailResolver,
     settingsResolver
 ],
   bootstrap: [AppComponent]

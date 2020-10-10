@@ -211,7 +211,7 @@ export class SettingsComponent implements OnInit {
       s=>{
         if(s.content!=null)
         {
-          this.image.uploadSlideImage({id:s.id,content:s.content,status:s.status}).subscribe(
+          this.image.uploadImage({id:s.id,content:s.content,status:s.status}).subscribe(
             (response:fileReturn)=>{
               if(response.result.message!='success')
               {

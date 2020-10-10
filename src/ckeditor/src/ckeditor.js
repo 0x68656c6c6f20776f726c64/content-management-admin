@@ -31,11 +31,13 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 
 import Context from '@ckeditor/ckeditor5-core/src/context';
 import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog';
+import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 
 class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
+	SimpleUploadAdapter,
 	Essentials,
 	UploadAdapter,
 	Autoformat,
@@ -60,7 +62,6 @@ ClassicEditor.builtinPlugins = [
 	TableToolbar
 ];
 
-// Editor configuration.
 ClassicEditor.defaultConfig = {
 	toolbar: {
 		items: [
@@ -71,9 +72,6 @@ ClassicEditor.defaultConfig = {
 			'link',
 			'bulletedList',
 			'numberedList',
-			'|',
-			'indent',
-			'outdent',
 			'|',
 			'imageUpload',
 			'blockQuote',
@@ -105,5 +103,5 @@ ClassicEditor.defaultConfig = {
 export default {
 	ClassicEditor,
 	Context,
-	ContextWatchdog
+	ContextWatchdog,
 };

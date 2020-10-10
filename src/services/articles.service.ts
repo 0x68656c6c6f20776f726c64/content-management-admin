@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { httpReturn } from 'src/models/httpReturn';
-import { articleCardViewModel } from 'src/models/viewModels/articleViewModel';
+import { articleCardViewModel, articleViewModel } from 'src/models/viewModels/articleViewModel';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +29,18 @@ export class ArticlesService {
     return this.http.get<articleCardViewModel[]>(this.API_URL+'/articles?category=news');
   }
 
+  getArticleById(articleId:string)
+  {
+    return this.http.get<articleViewModel>(this.API_URL+'/articles/'+articleId);
+  }
+
   getAllCases()
   {
     return this.http.get<articleCardViewModel[]>(this.API_URL+'/articles?category=case');
+  }
+
+  updateArticle(articleParam:articleViewModel):Observable<httpReturn>{
+    return this.http.put<httpReturn>(this.API_URL+'/articles/update',articleParam);
   }
 
   updateArticleCards(modifiledArticleCards:articleCardViewModel[]):Observable<httpReturn>[]{

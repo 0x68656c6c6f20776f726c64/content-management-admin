@@ -155,6 +155,59 @@ export class QuestionService {
     return of(createEvaluationForm);
   }
 
+  getCreateProjectFlowQuestions()
+  {
+    const projectFlowForm:QuestionBase<string>[]=[
+      new TextboxQuestion({
+        key:'title',
+        label:'Project Flow Title',
+        required:true,
+        order:1
+      }), 
+    ]
+    return of(projectFlowForm);
+  }
+
+  getCreateProjectFeeQuestions()
+  {
+    const projectFeeForm:QuestionBase<string>[]=[
+      new TextboxQuestion({
+        key:'title',
+        label:'Item',
+        required:true,
+        order:1
+      }),
+      new TextboxQuestion({
+        key:'amount',
+        label:'Cost',
+        required:true,
+        order:2
+      })
+    ]
+    return of(projectFeeForm.sort((a,b)=>a.order - b.order));
+  }
+
+  getEditProjectFeeQuestions(projectFee)
+  {
+    const projectFeeForm:QuestionBase<string>[]=[
+      new TextboxQuestion({
+        key:'title',
+        label:'Item',
+        required:true,
+        value:projectFee.title,
+        order:1
+      }),
+      new TextboxQuestion({
+        key:'amount',
+        label:'Cost',
+        value:projectFee.amount,
+        required:true,
+        order:2
+      })
+    ]
+    return of(projectFeeForm.sort((a,b)=>a.order - b.order)); 
+  }
+
   // TODO: get from a remote source of question metadata
   // getQuestions() {
 
